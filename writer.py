@@ -6,12 +6,6 @@ savefunc = ["htmlspecialchars"]
 brakelist = []
 
 
-# find var -------
-# find value of var. may contains func (if contains - proof in list if filtered-func.
-# if filtered - value=safe and listofskip-vars.append var)
-# go down until echo or EOF
-# foreach xml and if value=save/savevar - remove
-
 def find_var(string):
     regex = r'(?:\$_?)(\w+)((\[\')(\w+)(\'\]))?'
     listrez = re.findall(regex, string)
@@ -114,35 +108,33 @@ for file in root.findall('file'):
             varlist = find_var(line)
             if varlist:
                 for var in varlist:
-                    valuelist = find_value(line, var)
-                    if valuelist:
-                        for value in valuelist:
-                            if '\'' in value:
+                    if var not in brakelist:
+                        valuelist = find_value(line, var)
+                        if valuelist:
+                            for value in valuelist:
                                 var_value[var] = value
-                                brakelist.append(var)
-                            if '\'' not in value:
-                                var_value[var] = value
-                            func_value_list = find_func(line, value)
-                            if func_value_list:
-                                for func in func_value_list:
-                                    if func in savefunc:
-                                        var_filter[value] = func
-                                        break
-                                    else:
-                                        var_filter[value] = func
-                    func_var_list = find_func(line, var)
-                    if func_var_list:
-                        for func in func_var_list:
-                            if func in savefunc:
-                                var_filter[var] = func
-                                break
-                            else:
-                                var_filter[var] = func
-                    if not valuelist:
-                        if '\'' in var:
-                            var_value[var] = var
-                    if find_echo(line):
-                        var_echo[var] = doc.index(line)+1
+                                func_value_list = find_func(line, value)
+                                if func_value_list:
+                                    for func in func_value_list:
+                                        if func in savefunc:
+                                            var_filter[value] = func
+                                            break
+                                        else:
+                                            var_filter[value] = func
+                        func_var_list = find_func(line, var)
+                        if func_var_list:
+                            for func in func_var_list:
+                                if func in savefunc:
+                                    var_filter[var] = func
+                                    break
+                                else:
+                                    var_filter[var] = func
+                        if not valuelist:
+                            if '\'' in var:
+                                var_value[var] = var
+                        if find_echo(line):
+                            var_echo[var] = doc.index(line)+1
+                            brakelist.append(var)
 
         for var in var_value:
             for filtered_var in var_filter:
@@ -155,6 +147,7 @@ for file in root.findall('file'):
         var_value.clear()
         var_filter.clear()
         var_echo.clear()
+        brakelist = []
         tree = ET.ElementTree(root)
         tree.write("files.xml")
 
