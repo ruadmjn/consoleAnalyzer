@@ -4,6 +4,7 @@ import re
 
 tree = ET.parse("files.xml")
 root = tree.getroot()
+all_vulns = {}
 
 for file in root.findall('file'):
     try:
@@ -58,7 +59,28 @@ for file in root.findall('file'):
                                 vuln_dict[str(list_type_line)] = list_val_value
                                 list_val_value = []
                                 list_type_line = []
-        print filename+": "
-        print vuln_dict
+        all_vulns[filename] = vuln_dict
+
     except:
         pass
+
+    top = Element('project', {'name': '.zip'})
+    for file in all_vulns:
+        file_node = SubElement(top, 'file')
+        file_node.attrib["name"] = file
+        for vuln in all_vulns.get(file):
+            vtype = vuln.split()[0].replace('\'','').replace('[','').replace(',','')
+            line = vuln.split()[1].replace('\'','').replace(']','').replace(',','')
+            var = all_vulns.get(file).get(vuln)[0]
+            value = all_vulns.get(file).get(vuln)[1]
+            vuln_node = SubElement(file_node, 'vuln')
+            vuln_node.attrib["vtype"] = vtype
+            vuln_node.attrib["line"] = line
+            vuln_node.attrib["var"] = var
+            vuln_node.attrib["value"] = value
+
+tree = ET.ElementTree(top)
+tree.write("vulns.xml")
+
+
+
