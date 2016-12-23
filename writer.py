@@ -54,6 +54,16 @@ def find_func(string, var):
         return False
 
 
+def find_echo(string):
+    regex = r'(echo)'
+    listrez = re.findall(regex, string)
+    if len(listrez) > 0:
+        for rez in listrez:
+            return True
+    else:
+        return False
+
+
 def find_value(string, var):
     regex = r'(\(?\$_?' + var + '\)?)(?:\s?=\s?)(?:(\w+)(?:\())*(?:\$_?)(\w+)(?:(?:\[\')?(\w*)(?:\'\])?)'
     listrez = re.findall(regex, string)
@@ -92,6 +102,7 @@ tree = ET.parse("files.xml")
 root = tree.getroot()
 var_value = {}
 var_filter = {}
+var_echo = {}
 
 for file in root.findall('file'):
     try:
@@ -127,16 +138,23 @@ for file in root.findall('file'):
                                 break
                             else:
                                 var_filter[var] = func
+                    if not valuelist:
+                        if '\'' in var:
+                            var_value[var] = var
+                    if find_echo(line):
+                        var_echo[var] = doc.index(line)+1
 
         for var in var_value:
             for filtered_var in var_filter:
                 var_node = SubElement(file, 'var')
                 var_node.attrib["name"] = var
-                var_node.attrib["filtered"] = var_filter.get(var) if var == filtered_var else ""
+                var_node.attrib["filter"] = var_filter.get(var) if var == filtered_var else ""
                 var_node.attrib["value"] = var_value.get(var) if var_value.get(var) else ""
-                var_node.attrib["filtered_value"] = var_filter.get(filtered_var) if var_value.get(var) and var_value.get(var) == filtered_var else ""
+                var_node.attrib["filter_of_value"] = var_filter.get(filtered_var) if var_value.get(var) and var_value.get(var) == filtered_var else ""
+                var_node.attrib["echo_line"] = str(var_echo.get(var)) if var_echo.get(var) else ""
         var_value.clear()
         var_filter.clear()
+        var_echo.clear()
         tree = ET.ElementTree(root)
         tree.write("files.xml")
 

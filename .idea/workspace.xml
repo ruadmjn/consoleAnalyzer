@@ -13,7 +13,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/consoleAnalyzer$Unnamed.coverage" NAME="Unnamed Coverage Results" MODIFIED="1482451335556" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/consoleAnalyzer$Unnamed.coverage" NAME="Unnamed Coverage Results" MODIFIED="1482453295019" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -27,8 +27,8 @@
       <file leaf-file-name="writer.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/writer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="104" column="0" selection-start-line="104" selection-start-column="0" selection-end-line="104" selection-end-column="0" />
+            <state relative-caret-position="228">
+              <caret line="144" column="57" selection-start-line="144" selection-start-column="57" selection-end-line="144" selection-end-column="57" />
               <folding>
                 <element signature="e#0#72#0" expanded="true" />
               </folding>
@@ -40,7 +40,7 @@
         <entry file="file://$PROJECT_DIR$/files.xml">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
-              <caret line="0" column="9" selection-start-line="0" selection-start-column="9" selection-end-line="0" selection-end-column="9" />
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -361,13 +361,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/writer.py</url>
-          <line>113</line>
-          <option name="timeStamp" value="57" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/writer.py</url>
-          <line>104</line>
-          <option name="timeStamp" value="61" />
+          <line>155</line>
+          <option name="timeStamp" value="67" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -377,7 +372,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="62" />
+      <option name="time" value="68" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
@@ -385,6 +380,11 @@
         <watch expression="var" />
         <watch expression="re.findall(regex, string)" />
         <watch expression="var.replace(&quot;[&quot;, &quot;\[&quot;)" />
+        <watch expression="line.index()" />
+        <watch expression="doc.index(line)" />
+        <watch expression="var_echo.get(var)" />
+        <watch expression="var_node.attrib[&quot;echo_line&quot;]" />
+        <watch expression="var_node.attrib[&quot;filter_of_value&quot;]" />
       </configuration>
     </watches-manager>
   </component>
@@ -408,15 +408,15 @@
     <entry file="file://$PROJECT_DIR$/files.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="9" selection-start-line="0" selection-start-column="9" selection-end-line="0" selection-end-column="9" />
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/writer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="104" column="0" selection-start-line="104" selection-start-column="0" selection-end-line="104" selection-end-column="0" />
+        <state relative-caret-position="228">
+          <caret line="144" column="57" selection-start-line="144" selection-start-column="57" selection-end-line="144" selection-end-column="57" />
           <folding>
             <element signature="e#0#72#0" expanded="true" />
           </folding>
