@@ -1,6 +1,6 @@
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring
 import xml.etree.ElementTree as ET
-import re, string
+import re
 
 savefunc = ["htmlspecialchars"]
 brakelist = []
@@ -37,7 +37,7 @@ def find_var(string):
 def find_func(string, var):
     if '[' in var:
         var = var.replace("[", "\[")
-    regex = r'(?:(\w+)(?:\())*(\$_?' + var + ')'
+    regex = r'(?:(\w+)(?:\())*(?:(?:\'?\"?(?:\$?\w*)?\'?\"?\.?)*)?(\$_?' + var + ')'
     listrez = re.findall(regex, string)
     func = ""
     returnlist = []
@@ -65,7 +65,7 @@ def find_echo(string):
 
 
 def find_value(string, var):
-    regex = r'(\(?\$_?' + var + '\)?)(?:\s?=\s?)(?:(\w+)(?:\())*(?:\$_?)(\w+)(?:(?:\[\')?(\w*)(?:\'\])?)'
+    regex = r'(\(?\$_?' + var + '\)?)(?:\s?=\s?)(?:(\w+)(?:\())*(?:(?:\'?\"?(?:\$?\w*)?\'?\"?\.?)*)?(?:\$_?)(\w+)(?:(?:\[\')?(\w*)(?:\'\])?)'
     listrez = re.findall(regex, string)
     POST = ""
     var = ""
