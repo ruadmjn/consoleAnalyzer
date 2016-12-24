@@ -137,13 +137,17 @@ for file in root.findall('file'):
                             brakelist.append(var)
 
         for var in var_value:
-            for filtered_var in var_filter:
-                var_node = SubElement(file, 'var')
-                var_node.attrib["name"] = var
-                var_node.attrib["filter"] = var_filter.get(var) if var == filtered_var else ""
-                var_node.attrib["value"] = var_value.get(var) if var_value.get(var) else ""
-                var_node.attrib["filter_of_value"] = var_filter.get(filtered_var) if var_value.get(var) and var_value.get(var) == filtered_var else ""
-                var_node.attrib["echo_line"] = str(var_echo.get(var)) if var_echo.get(var) else ""
+            var_node = SubElement(file, 'var')
+            var_node.attrib["name"] = var
+            var_node.attrib["value"] = var_value.get(var) if var_value.get(var) else ""
+            var_node.attrib["echo_line"] = str(var_echo.get(var)) if var_echo.get(var) else ""
+            if var_filter:
+                for filtered_var in var_filter:
+                    var_node.attrib["filter"] = var_filter.get(var) if var == filtered_var else ""
+                    var_node.attrib["filter_of_value"] = var_filter.get(filtered_var) if var_value.get(var) and var_value.get(var) == filtered_var else ""
+            else:
+                var_node.attrib["filter"] = ""
+                var_node.attrib["filter_of_value"] = ""
         var_value.clear()
         var_filter.clear()
         var_echo.clear()

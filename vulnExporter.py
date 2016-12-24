@@ -30,22 +30,24 @@ for file in root.findall('file'):
             if var.get('value') != '':
                 value = var.get('value')
             name = var.get('name')
-
+            const_name = name
             #logic
 
-            if '[' in value and not filter_flag and not filter_of_value_flag:
-                if echo_flag:
-                    vuln_type = "xss"
-                    list_val_value.append(name)
-                    list_val_value.append(value)
-                    list_type_line.append(vuln_type)
-                    list_type_line.append(var.get('echo_line'))
-                    vuln_dict[str(list_type_line)] = list_val_value
-                    list_val_value = []
-                    list_type_line = []
+            if not filter_flag and not filter_of_value_flag:
+                if '[' in value:
+                    if echo_flag:
+                        vuln_type = "xss"
+                        list_val_value.append(name)
+                        list_val_value.append(value)
+                        list_type_line.append(vuln_type)
+                        list_type_line.append(var.get('echo_line'))
+                        vuln_dict[str(list_type_line)] = list_val_value
+                        list_val_value = []
+                        list_type_line = []
+                        continue
                 if not echo_flag:
                     for proof_var in file.findall('var'):
-                        if proof_var.get('value') == name and proof_var.get('name') is not name:
+                        if (proof_var.get('value') == name) and proof_var.get('name') is not name:
                             #we found another var with vuln value
                             if proof_var.get('filter') == "" and proof_var.get('filter_of_value') == "":
                                 if proof_var.get('echo_line') is not '':
@@ -53,12 +55,32 @@ for file in root.findall('file'):
                                 else:
                                     vuln_type = "weakness"
                                 list_val_value.append(proof_var.get('name'))
-                                list_val_value.append(proof_var.get('value'))
+                                list_val_value.append(proof_var.get('value') if '[' in proof_var.get('value') else var.get('value'))
                                 list_type_line.append(vuln_type)
-                                list_type_line.append(proof_var.get('echo_line'))
+                                list_type_line.append(var.get('echo_line') if var.get('echo_line') != '' else proof_var.get('echo_line'))
                                 vuln_dict[str(list_type_line)] = list_val_value
                                 list_val_value = []
                                 list_type_line = []
+                                continue
+                if echo_flag and '[' not in value:
+                    for proof_var in file.findall('var'):
+                        if (proof_var.get('name') == value) and proof_var.get('name') is not name:
+                            # we found another var with vuln value
+                            if '[' not in proof_var.get('value'):
+                                name = proof_var.get('value')
+                                continue
+                            if '[' in proof_var.get('value'):
+                                if proof_var.get('filter') == "" and proof_var.get('filter_of_value') == "":
+                                    vuln_type = "xss"
+                                    list_val_value.append(const_name)
+                                    list_val_value.append(proof_var.get('value'))
+                                    list_type_line.append(vuln_type)
+                                    list_type_line.append(var.get('echo_line'))
+                                    vuln_dict[str(list_type_line)] = list_val_value
+                                    list_val_value = []
+                                    list_type_line = []
+                                    continue
+
         all_vulns[filename] = vuln_dict
 
     except:
