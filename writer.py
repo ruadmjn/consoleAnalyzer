@@ -102,11 +102,9 @@ for file in root.findall('file'):
     try:
         filename = file.find('name').text
         f = open(filename, 'r')
-        doc = reversed(f.readlines())
-        line_number = len(doc) - 1
+        doc = f.readlines()
         #open file from xml and do magic
         for line in doc:
-            line_number = line_number -1
             varlist = find_var(line)
             if varlist:
                 for var in varlist:
@@ -135,7 +133,7 @@ for file in root.findall('file'):
                             if '\'' in var:
                                 var_value[var] = var
                         if find_echo(line):
-                            var_echo[var] = line_number
+                            var_echo[var] = doc.index(line)+1
                             brakelist.append(var)
 
         for var in var_value:
