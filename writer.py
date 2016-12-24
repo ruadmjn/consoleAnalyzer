@@ -102,9 +102,11 @@ for file in root.findall('file'):
     try:
         filename = file.find('name').text
         f = open(filename, 'r')
-        doc = f.readlines()
+        doc = reversed(f.readlines())
+        line_number = len(doc) - 1
         #open file from xml and do magic
         for line in doc:
+            line_number = line_number -1
             varlist = find_var(line)
             if varlist:
                 for var in varlist:
@@ -133,7 +135,7 @@ for file in root.findall('file'):
                             if '\'' in var:
                                 var_value[var] = var
                         if find_echo(line):
-                            var_echo[var] = doc.index(line)+1
+                            var_echo[var] = line_number
                             brakelist.append(var)
 
         for var in var_value:
@@ -141,13 +143,11 @@ for file in root.findall('file'):
             var_node.attrib["name"] = var
             var_node.attrib["value"] = var_value.get(var) if var_value.get(var) else ""
             var_node.attrib["echo_line"] = str(var_echo.get(var)) if var_echo.get(var) else ""
-            if var_filter:
-                for filtered_var in var_filter:
-                    var_node.attrib["filter"] = var_filter.get(var) if var == filtered_var else ""
-                    var_node.attrib["filter_of_value"] = var_filter.get(filtered_var) if var_value.get(var) and var_value.get(var) == filtered_var else ""
-            else:
-                var_node.attrib["filter"] = ""
-                var_node.attrib["filter_of_value"] = ""
+
+            for filtered_var in var_filter:
+                var_node.attrib["filter"] = var_filter.get(var) if var == filtered_var else ""
+                var_node.attrib["filter_of_value"] = var_filter.get(filtered_var) if var_value.get(var) and var_value.get(var) == filtered_var else ""
+
         var_value.clear()
         var_filter.clear()
         var_echo.clear()

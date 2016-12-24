@@ -5,6 +5,17 @@ import re
 tree = ET.parse("files.xml")
 root = tree.getroot()
 all_vulns = {}
+vulnchannels_list = ['POST','GET','REQUEST','COOKIE']
+
+def check_channel(POSTvar):
+    regex = r'(\w+)(\[\'\w+\'\])'
+    listrez = re.findall(regex, POSTvar)
+    boolrez = False
+    for rez in listrez:
+        if rez[0] in vulnchannels_list:
+            boolrez = True
+    return boolrez
+
 
 for file in root.findall('file'):
     try:
@@ -36,7 +47,10 @@ for file in root.findall('file'):
             if not filter_flag and not filter_of_value_flag:
                 if '[' in value:
                     if echo_flag:
-                        vuln_type = "xss"
+                        if not check_channel(var.get('value')):
+                            vuln_type = "stored_xss"
+                        else:
+                            vuln_type = "xss"
                         list_val_value.append(name)
                         list_val_value.append(value)
                         list_type_line.append(vuln_type)
@@ -64,14 +78,16 @@ for file in root.findall('file'):
                                 continue
                 if echo_flag and '[' not in value:
                     for proof_var in file.findall('var'):
-                        if (proof_var.get('name') == value) and proof_var.get('name') is not name:
+                        if (proof_var.get('name') == value) and (proof_var.get('name') is not name) :
                             # we found another var with vuln value
                             if '[' not in proof_var.get('value'):
-                                name = proof_var.get('value')
-                                continue
+                                value = proof_var.get('value')
                             if '[' in proof_var.get('value'):
                                 if proof_var.get('filter') == "" and proof_var.get('filter_of_value') == "":
-                                    vuln_type = "xss"
+                                    if not check_channel(proof_var.get('value')):
+                                        vuln_type = "stored_xss"
+                                    else:
+                                        vuln_type = "xss"
                                     list_val_value.append(const_name)
                                     list_val_value.append(proof_var.get('value'))
                                     list_type_line.append(vuln_type)
