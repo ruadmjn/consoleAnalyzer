@@ -97,6 +97,7 @@ root = tree.getroot()
 var_value = {}
 var_filter = {}
 var_echo = {}
+var_line = {}
 
 for file in root.findall('file'):
     try:
@@ -113,6 +114,7 @@ for file in root.findall('file'):
                         if valuelist:
                             for value in valuelist:
                                 var_value[var] = value
+                                var_line[var] = doc.index(line)+1
                                 func_value_list = find_func(line, value)
                                 if func_value_list:
                                     for func in func_value_list:
@@ -132,8 +134,10 @@ for file in root.findall('file'):
                         if not valuelist:
                             if '\'' in var:
                                 var_value[var] = var
+                                var_line[var] = doc.index(line) + 1
                         if find_echo(line):
-                            var_echo[var] = doc.index(line)+1
+                            var_echo[var] = doc.index(line) + 1
+                            var_line[var] = doc.index(line) + 1
                             brakelist.append(var)
 
         for var in var_value:
@@ -141,7 +145,7 @@ for file in root.findall('file'):
             var_node.attrib["name"] = var
             var_node.attrib["value"] = var_value.get(var) if var_value.get(var) else ""
             var_node.attrib["echo_line"] = str(var_echo.get(var)) if var_echo.get(var) else ""
-
+            var_node.attrib["line"] = str(var_line.get(var)) if var_line.get(var) else ""
             for filtered_var in var_filter:
                 var_node.attrib["filter"] = var_filter.get(var) if var == filtered_var else ""
                 var_node.attrib["filter_of_value"] = var_filter.get(filtered_var) if var_value.get(var) and var_value.get(var) == filtered_var else ""
