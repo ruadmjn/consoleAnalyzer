@@ -12,6 +12,8 @@ rootDir = PROJECT_FOLDER
 top = Element('project', {'name':'.zip'})
 for dirName, subdirList, fileList in os.walk(rootDir):
     for fname in fileList:
+        if '.php' not in fname:
+            continue
         file_node = SubElement(top, 'file')
         name_node = SubElement(file_node, 'name')
         name_node.text = os.path.join(dirName,fname)
